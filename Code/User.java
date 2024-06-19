@@ -115,17 +115,8 @@ public class User{
             final JTextField[] textFields = {firstNameTextField, lastNameTextField, passwordField};
 
             // Reminder that reminds the user when there are errors once everytime the button is clicked
-            boolean reminder = false;
-
-            // for loop that checks if any text field is empty and whether the reminder is false to make sure the reminder is displayed once
-            for (JTextField field : textFields) {
-                if (field.getText().isEmpty() && !reminder) {
-
-                    // Displays reminder
-                    JOptionPane.showMessageDialog(null, "Please fill in all of the fields");
-                    reminder = true;
-                }
-            }
+            boolean reminder;
+            reminder = fieldValidation(textFields, null);
 
             boolean userFound = false;
 
@@ -276,72 +267,68 @@ public class User{
             // List of all text fields
             final JTextField[] textFields = {firstNameTextField, lastNameTextField, phoneNumberTextField, passwordField, confirmPasswordField};
 
-            boolean reminder = false; // To make sure a maximum of 1 reminder is shown per iteration
+            boolean reminder; // To make sure a maximum of 1 reminder is shown per iteration and indicates the end of the iteration if becomes true
+            reminder = fieldValidation(textFields, null);
 
-            // Goes through all the text field and make sure they are not empty. If it is, will show a reminder
-            for (JTextField field : textFields) {
-                if (field.getText().isEmpty() && !reminder) {
-                    JOptionPane.showMessageDialog(null, "Please fill in all of the fields");
-                    reminder = true;
+            if (!reminder) {
+
+                // Create character array for the phone number string
+                char[] phoneNumberArray = phoneNumberTextField.getText().toCharArray();
+
+                // Checks whether the phone number entered is in the correct format
+                for (char c : phoneNumberArray) {
+
+                    // Checks whether each position in the string is a digit
+                    if (!Character.isDigit(c) && !reminder) {
+                        reminder = true;
+                        JOptionPane.showMessageDialog(null, "Please enter a valid phone number");
+                    }
                 }
-            }
 
-            // Create character array for the phone number string
-            char[] phoneNumberArray = phoneNumberTextField.getText().toCharArray();
-
-            // Checks whether the phone number entered is in the correct format
-            for (char c : phoneNumberArray){
-
-                // Checks whether each position in the string is a digit
-                if (!Character.isDigit(c)){
+                // Ensure that the length of the phone number is valid
+                if (phoneNumberArray.length < 9 && !reminder) {
                     reminder = true;
                     JOptionPane.showMessageDialog(null, "Please enter a valid phone number");
                 }
-            }
 
-            // Ensure that the length of the phone number is valid
-            if (phoneNumberArray.length < 9){
-                reminder = true;
-                JOptionPane.showMessageDialog(null, "Please enter a valid phone number");
-            }
+                // Get the strings from the password field
+                String passwords = new String(passwordField.getPassword());
+                String confirmPasswordString = new String(confirmPasswordField.getPassword());
 
-            // Get the strings from the password field
-            String passwords = new String(passwordField.getPassword());
-            String confirmPasswordString = new String(confirmPasswordField.getPassword());
-
-            // Compares the password and the password confirmed strings to see if they are the same
-            if (!passwords.equals(confirmPasswordString) && !reminder){
-                JOptionPane.showMessageDialog(null, "Please confirm that the Passwords are equivalent");
-                reminder = true;
-            }
-
-            // If there are no errors restricting, will create the user
-            if (!reminder) {
-
-                // Get all necessary information from the text fields
-                String firstNameString = firstNameTextField.getText();
-                String lastNameString = lastNameTextField.getText();
-                String phoneNumberString = phoneNumberTextField.getText();
-                String passwordString = new String(passwordField.getPassword());
-
-                // If it is an employee, create a new user and employee
-                if (employee){
-                    Employee employee1 = new Employee(firstNameString, lastNameString, String.valueOf(phoneNumberString), passwordString);
-                    User user = new User(firstNameString, lastNameString, passwordString);
-                    Main.employeeList.add(employee1); // Add to the employee list
-                    Main.employeeHashtable.put(user, employee1); // Add to the employee hashtable used in login process
-
-                    actionPage(employee1); // Executes the actionPage of an employee (as the methods are overloaded with customer and employee parameter)
-                    frame.dispose();
+                // Compares the password and the password confirmed strings to see if they are the same
+                if (!passwords.equals(confirmPasswordString) && !reminder) {
+                    JOptionPane.showMessageDialog(null, "Please confirm that the Passwords are equivalent");
+                    reminder = true;
                 }
-                else{
-                    Customer customer = new Customer(firstNameString, lastNameString, String.valueOf(phoneNumberString), passwordString); // Creates new Customer
-                    User user = new User(firstNameString, lastNameString, passwordString); // User
-                    Main.customerList.add(customer);  // Add to the customer list
-                    Main.customerHashtable.put(user, customer); // Add to the customer hashtable
 
-                    actionPage(customer); // Executes the actionPage of a customer
-                    frame.dispose();
+                // If there are no errors restricting, will create the user
+                if (!reminder) {
+
+                    // Get all necessary information from the text fields
+                    String firstNameString = firstNameTextField.getText();
+                    String lastNameString = lastNameTextField.getText();
+                    String phoneNumberString = phoneNumberTextField.getText();
+                    String passwordString = new String(passwordField.getPassword());
+
+                    // If it is an employee, create a new user and employee
+                    if (employee) {
+                        Employee employee1 = new Employee(firstNameString, lastNameString, String.valueOf(phoneNumberString), passwordString);
+                        User user = new User(firstNameString, lastNameString, passwordString);
+                        Main.employeeList.add(employee1); // Add to the employee list
+                        Main.employeeHashtable.put(user, employee1); // Add to the employee hashtable used in login process
+
+                        actionPage(employee1); // Executes the actionPage of an employee (as the methods are overloaded with customer and employee parameter)
+                        frame.dispose();
+
+                    } else {
+                        Customer customer = new Customer(firstNameString, lastNameString, String.valueOf(phoneNumberString), passwordString); // Creates new Customer
+                        User user = new User(firstNameString, lastNameString, passwordString); // User
+                        Main.customerList.add(customer);  // Add to the customer list
+                        Main.customerHashtable.put(user, customer); // Add to the customer hashtable
+
+                        actionPage(customer); // Executes the actionPage of a customer
+                        frame.dispose();
+                    }
                 }
             }
         });
@@ -518,5 +505,34 @@ public class User{
 
     public String getLastName() {
         return lastName;
+    }
+
+    public static boolean fieldValidation(JTextField[] textFields, JTextField[] numberFields){
+
+        boolean reminder = false;
+
+        // Makes sure all fields are filled
+        for (JTextField textField : textFields){
+            if (textField.getText().isEmpty() && !reminder) {
+                reminder = true;
+                JOptionPane.showMessageDialog(null, "Please fill in all of the fields");
+                break;
+            }
+        }
+
+        // Checks whether the values are in integer for fields that require integer inputs, may be null because some validation do not require numbers
+        if (numberFields != null) {
+            for (JTextField numberField : numberFields) {
+                try {
+                    int value = Integer.parseInt(numberField.getText());
+                } catch (NumberFormatException a) {
+                    if (!reminder) JOptionPane.showMessageDialog(null, "Please enter valid values");
+                    reminder = true;
+                    break;
+                }
+            }
+        }
+
+        return reminder; // true if invalid, false if valid
     }
 }
