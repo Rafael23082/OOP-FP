@@ -286,6 +286,7 @@ public class User{
                 }
             }
 
+            // Create character array for the phone number string
             char[] phoneNumberArray = phoneNumberTextField.getText().toCharArray();
 
             // Checks whether the phone number entered is in the correct format
