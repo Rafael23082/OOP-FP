@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 
-public class Main{
+final public class Main{
 
     // Stores all Customers
     static ArrayList<Customer> customerList = new ArrayList<>();
