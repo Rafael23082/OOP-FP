@@ -366,10 +366,10 @@ final public class Employee extends User{
             else carFeature = "Unavailable";
         }
 
-        boolean validStatusInput = false;
+        boolean validInput = false;
         String change = null;
 
-        while (!validStatusInput) {
+        while (!validInput) {
             // Get the new string
             change = JOptionPane.showInputDialog("Edit " + feature + " for Car " + car.getBrand() + " " + car.getModel() +
                     "\n\nEnter a " + feature + ":");
@@ -377,11 +377,24 @@ final public class Employee extends User{
             // If it is status, it will check whether the input is valid or not (Available / Unavailable)
             if (feature.equalsIgnoreCase("Status")) {
                 if (change.equalsIgnoreCase("Available") || change.equalsIgnoreCase("Unavailable")){
-                    validStatusInput = true;
+                    validInput = true;
                 } else {
                     JOptionPane.showMessageDialog(null, "Please enter Available or Unavailable");
                 }
-            } else validStatusInput = true; // Will not loop if it is not regarding the status
+            }
+
+            // Ensure the features that require an integer input is in integer data type
+            else if (feature.equalsIgnoreCase("Year") || feature.equalsIgnoreCase("Price") || feature.equalsIgnoreCase("Mileage")) {
+
+                // Converts string to integer, if there is an error, will display an error message
+                try {
+                    int intValue = Integer.parseInt(change);
+                    validInput = true;
+                } catch (NumberFormatException e){
+                    JOptionPane.showMessageDialog(null, "Please enter an integer");
+            }
+
+            } else validInput = true; // Will not loop if it is not regarding the status
         }
         // Ask for confirmation
         int confirmation = JOptionPane.showConfirmDialog(null, "Confirm change of " + feature + " from " + carFeature + " to " + change + "?");
