@@ -406,7 +406,7 @@ final public class Customer extends User{
         JButton confirm = new JButton("Confirm");
         confirm.setBounds(235, 330, 90, 30);
 
-        // Will display that the process was successful, and make the car.available to false
+        // Will display that the process was successful, and make the car.available to false. Leading the user back to the actionPage.
         confirm.addActionListener( e-> {
             car.setAvailable(false);
             JOptionPane.showMessageDialog(null, "Car Rented Successfully!");
