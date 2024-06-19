@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.util.Random;
 
-public class Employee extends User{
+final public class Employee extends User{
 
     String employeeID, phoneNumber;
 
