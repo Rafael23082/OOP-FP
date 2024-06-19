@@ -507,6 +507,7 @@ public class User{
         return lastName;
     }
 
+    // Method that verifies text fields whether they are valid. (Emptiness and Data type correctness).
     public static boolean fieldValidation(JTextField[] textFields, JTextField[] numberFields){
 
         boolean reminder = false;
