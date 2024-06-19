@@ -307,7 +307,7 @@ final public class Employee extends User{
             if (year != null) car.setYear(Integer.parseInt(year));
         });
 
-        // Price Button
+        // Price Button.
         JButton priceButton = new JButton("Price");
         priceButton.setBounds(330, 150, 90, 50);
 
