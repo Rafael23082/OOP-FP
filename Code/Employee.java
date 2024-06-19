@@ -392,8 +392,9 @@ final public class Employee extends User{
                     validInput = true;
                 } catch (NumberFormatException e){
                     JOptionPane.showMessageDialog(null, "Please enter an integer");
-            }
-
+                }
+            } else if (change == null) { // Makes sure input is not null
+                JOptionPane.showMessageDialog(null, "Please enter a valid input");
             } else validInput = true; // Will not loop if it is not regarding the status
         }
         // Ask for confirmation
