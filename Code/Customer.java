@@ -3,7 +3,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 // Class that processes the actions of a customer
-public class Customer extends User{
+final public class Customer extends User{
 
     String customerID, phoneNumber;
     // Customer constructor with containing the attributes of user and additional attributes
@@ -322,16 +322,21 @@ public class Customer extends User{
                 if (!C.isAvailable()) JOptionPane.showMessageDialog(null, "The car " + C.getBrand() + " " + C.getModel() + " is currently unavailable.");
 
                 else {
-                    boolean validDays = false;
+
                     int days = 0;
                     String date = null;
+                    boolean invalidDays = false;
 
                     // Get a valid number of rental days
-                    while (!validDays) {
-                        days = Integer.parseInt(JOptionPane.showInputDialog("Enter the Days you want the Rental to Be:"));
+                    while (!invalidDays) {
 
-                        if (days > 0) validDays = true;
-                        else JOptionPane.showMessageDialog(null, "Please enter a valid amount of days");
+                        // Checks whether the data entered is an integer data type and greater than 0
+                        try {
+                            days = Integer.parseInt(JOptionPane.showInputDialog("Enter the amount of days the rental will be (Max 30 Days):"));
+                            if (days > 0 && days <= 30) invalidDays = true;
+                        } catch (NumberFormatException a) {
+                            JOptionPane.showMessageDialog(null, "Please Enter a valid Days Value");
+                        }
                     }
 
                     // Get valid date format
