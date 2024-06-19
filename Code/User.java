@@ -286,14 +286,22 @@ public class User{
                 }
             }
 
+            char[] phoneNumberArray = phoneNumberTextField.getText().toCharArray();
+
             // Checks whether the phone number entered is in the correct format
-            for (char c : phoneNumberTextField.getText().toCharArray()){
+            for (char c : phoneNumberArray){
 
                 // Checks whether each position in the string is a digit
                 if (!Character.isDigit(c)){
                     reminder = true;
                     JOptionPane.showMessageDialog(null, "Please enter a valid phone number");
                 }
+            }
+
+            // Ensure that the length of the phone number is valid
+            if (phoneNumberArray.length < 9){
+                reminder = true;
+                JOptionPane.showMessageDialog(null, "Please enter a valid phone number");
             }
 
             // Get the strings from the password field
