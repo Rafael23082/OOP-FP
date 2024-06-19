@@ -100,20 +100,32 @@ final public class Employee extends User{
                 if (!duplicate) loop = false;
             }
 
-            // Get attributes
-            String brand = carBrandTextField.getText().substring(0,1).toUpperCase() + carBrandTextField.getText().substring(1).toLowerCase();
-            String model = carModelTextField.getText().substring(0,1).toUpperCase() + carModelTextField.getText().substring(1).toLowerCase();
-            String colour = colorTextField.getText().substring(0,1).toUpperCase() + colorTextField.getText().substring(1).toLowerCase();
-            int yearValue = Integer.parseInt(yearTextField.getText());
-            double pricePerDay = Double.parseDouble(priceTextField.getText());
-            double mileageValue = Double.parseDouble(mileageTextField.getText());
+            // Create text field arrays for validation
+            JTextField[] textFields = new JTextField[]{carBrandTextField, carModelTextField, colorTextField, yearTextField, priceTextField, mileageTextField};
+            JTextField[] numberFields = new JTextField[]{yearTextField, priceTextField, mileageTextField};
 
-            // Create new car and add it to the car list
-            Car car = new Car(randomID, brand, model, colour, yearValue, pricePerDay, mileageValue, true);
-            Main.carList.add(car);
+            boolean validInputs;
+            // Checks whether all fields are valid
+            validInputs = User.fieldValidation(textFields, numberFields);
 
-            // Show a message stating that the car is added successfully
-            JOptionPane.showMessageDialog(null, "Car " + brand + " " + model + " has been successfully added!");
+            if (validInputs) {
+                // Get attributes
+                String brand = carBrandTextField.getText().substring(0, 1).toUpperCase() + carBrandTextField.getText().substring(1).toLowerCase();
+                String model = carModelTextField.getText().substring(0, 1).toUpperCase() + carModelTextField.getText().substring(1).toLowerCase();
+                String colour = colorTextField.getText().substring(0, 1).toUpperCase() + colorTextField.getText().substring(1).toLowerCase();
+                int yearValue = Integer.parseInt(yearTextField.getText());
+                double pricePerDay = Double.parseDouble(priceTextField.getText());
+                double mileageValue = Double.parseDouble(mileageTextField.getText());
+
+                // Create new car and add it to the car list
+                Car car = new Car(randomID, brand, model, colour, yearValue, pricePerDay, mileageValue, true);
+                Main.carList.add(car);
+
+                // Show a message stating that the car is added successfully
+                JOptionPane.showMessageDialog(null, "Car " + brand + " " + model + " has been successfully added!");
+                frame.dispose();
+                addCar(employee);
+            }
         });
 
         frame.add(panel); // Add panel to the frame
