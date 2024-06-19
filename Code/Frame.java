@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 // Class that makes frame initializing more efficient
-public class Frame extends JFrame {
+final public class Frame extends JFrame {
 
     public Frame() {
         this.setSize(1280, 760); // Set Size
