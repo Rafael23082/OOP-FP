@@ -286,6 +286,16 @@ public class User{
                 }
             }
 
+            // Checks whether the phone number entered is in the correct format
+            for (char c : phoneNumberTextField.getText().toCharArray()){
+
+                // Checks whether each position in the string is a digit
+                if (!Character.isDigit(c)){
+                    reminder = true;
+                    JOptionPane.showMessageDialog(null, "Please enter a valid phone number");
+                }
+            }
+
             // Get the strings from the password field
             String passwords = new String(passwordField.getPassword());
             String confirmPasswordString = new String(confirmPasswordField.getPassword());
@@ -307,7 +317,7 @@ public class User{
 
                 // If it is an employee, create a new user and employee
                 if (employee){
-                    Employee employee1 = new Employee(firstNameString, lastNameString, phoneNumberString, passwordString);
+                    Employee employee1 = new Employee(firstNameString, lastNameString, String.valueOf(phoneNumberString), passwordString);
                     User user = new User(firstNameString, lastNameString, passwordString);
                     Main.employeeList.add(employee1); // Add to the employee list
                     Main.employeeHashtable.put(user, employee1); // Add to the employee hashtable used in login process
@@ -316,7 +326,7 @@ public class User{
                     frame.dispose();
                 }
                 else{
-                    Customer customer = new Customer(firstNameString, lastNameString, phoneNumberString, passwordString); // Creates new Customer
+                    Customer customer = new Customer(firstNameString, lastNameString, String.valueOf(phoneNumberString), passwordString); // Creates new Customer
                     User user = new User(firstNameString, lastNameString, passwordString); // User
                     Main.customerList.add(customer);  // Add to the customer list
                     Main.customerHashtable.put(user, customer); // Add to the customer hashtable
