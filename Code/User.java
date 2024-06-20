@@ -542,9 +542,9 @@ public class User{
             for (JTextField numberField : numberFields) {
                 try {
                     int value = Integer.parseInt(numberField.getText());
-                } catch (NumberFormatException a) {
+                } catch (NumberFormatException a) { // Makes sure input is in the correct data type
                     if (!reminder) JOptionPane.showMessageDialog(null, "Please enter valid values");
-                    reminder = true;
+                    reminder = true; // Ensures reminder is displayed once
                     break;
                 }
             }
