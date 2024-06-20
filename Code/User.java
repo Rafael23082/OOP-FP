@@ -6,7 +6,7 @@ public class User{
     // User constructor with necessary information to log in
     final private String firstName, lastName, password; // Set to final because it will not change
     public User(String firstName, String lastName, String password){
-        this.firstName = firstName.substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
+        this.firstName = firstName.substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase(); // Capitalizes the first alphabet
         this.lastName = lastName.substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
         this.password = password;
     }
