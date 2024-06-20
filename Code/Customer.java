@@ -111,17 +111,18 @@ final public class Customer extends User{
             while (!validYear) {
                 try {
                     carYear = JOptionPane.showInputDialog("Enter a Year:"); // Year input
-                    if (carYear == null){
+                    if (carYear == null){ // if the user clicks the cancel button, will not execute the rest of the program
                         proceedAction = false;
                     } else {int carYearInteger = Integer.parseInt(carYear);}
                     validYear = true;
 
-                } catch (NumberFormatException a){
+                } catch (NumberFormatException a){ // Makes sure data type is correct
                     JOptionPane.showMessageDialog(null, "Please enter a number");
                 }
             }
             ArrayList<Car> targetCars = new ArrayList<>();
 
+            // Executed if data entered is valid, and the user didn't click the cancel button
             if (proceedAction) {
 
                 for (Car C : Main.carList) {
@@ -152,7 +153,7 @@ final public class Customer extends User{
             double priceDouble = 0;
 
             boolean validPrice = false;
-            boolean proceedProgram = true;
+            boolean proceedProgram = true; // To provide appropriate action when the user clicks the cancel button
 
             // Provides appropriate action if user cancels, or enter invalid data type
             while (!validPrice) {
@@ -160,18 +161,19 @@ final public class Customer extends User{
                     price = JOptionPane.showInputDialog("Enter a price ($) to show cars with a price less than or equal to the number");
                     if (price == null){
                         validPrice = true;
-                        proceedProgram = false;
+                        proceedProgram = false; // Doesn't execute the rest of the program if the user clicks the cancel button
                     } else {
                         priceDouble = Double.parseDouble(price);
                         validPrice = true;
                     }
-                } catch (NumberFormatException a) {
+                } catch (NumberFormatException a) { // Makes sure input is in the correct data type
                     JOptionPane.showMessageDialog(null, "Please enter a number");
                 }
             }
 
             ArrayList<Car> targetCars = new ArrayList<>();
 
+            // Executes if user didn't click the cancel button
             if (proceedProgram) {
                 // Goes through each car and compare the price
                 for (Car C : Main.carList) {
@@ -197,7 +199,7 @@ final public class Customer extends User{
         mileageButton.addActionListener( e-> {
 
             boolean present = false, validInput = false;
-            boolean proceedTheProgram = true;
+            boolean proceedTheProgram = true; // To provide appropriate action when user clicks the cancel button
             String mileage = null;
             Double mileageDouble = 0.0;
 
@@ -206,11 +208,11 @@ final public class Customer extends User{
                 try {
                     mileage = JOptionPane.showInputDialog("Enter a distance (KM) to show cars with mileage less than or equal to the number");
                     if (mileage == null) {
-                        proceedTheProgram = false;
+                        proceedTheProgram = false; // Will stop if user clicks the cancel button
                     }
                     else mileageDouble = Double.parseDouble(mileage);
                     validInput = true;
-                } catch (NumberFormatException a) {
+                } catch (NumberFormatException a) { // Makes sure input is in the correct data typer
                     JOptionPane.showMessageDialog(null, "Please enter a number");
                 }
             }
