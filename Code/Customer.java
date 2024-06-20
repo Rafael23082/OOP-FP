@@ -358,7 +358,7 @@ final public class Customer extends User{
 
                             // Ensures that the date is after today
                             if (now.after(dateObtained)) {
-                                JOptionPane.showMessageDialog(null, "Please enter a valid date");
+                                JOptionPane.showMessageDialog(null, "Please enter a date after today");
                             } else validDate = true;
 
                         } catch (ParseException a) { // If there is a parse error, will display an error message and continue loop
