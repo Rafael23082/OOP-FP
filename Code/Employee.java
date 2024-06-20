@@ -90,7 +90,6 @@ final public class Employee extends User{
 
             // Make sure that the car ID is unique
             while (loop) {
-
                 boolean duplicate = false;
 
                 randomID = "C" + random.nextInt(0, 100);
@@ -104,11 +103,11 @@ final public class Employee extends User{
             JTextField[] textFields = new JTextField[]{carBrandTextField, carModelTextField, colorTextField, yearTextField, priceTextField, mileageTextField};
             JTextField[] numberFields = new JTextField[]{yearTextField, priceTextField, mileageTextField};
 
-            boolean validInputs;
+            boolean reminder;
             // Checks whether all fields are valid
-            validInputs = User.fieldValidation(textFields, numberFields);
+            reminder = User.fieldValidation(textFields, numberFields);
 
-            if (validInputs) {
+            if (!reminder) {
                 // Get attributes
                 String brand = carBrandTextField.getText().substring(0, 1).toUpperCase() + carBrandTextField.getText().substring(1).toLowerCase();
                 String model = carModelTextField.getText().substring(0, 1).toUpperCase() + carModelTextField.getText().substring(1).toLowerCase();
@@ -188,7 +187,7 @@ final public class Employee extends User{
                         deleteCar(employee);
                         frame.dispose();
 
-                    // Otherwise, will cancel the removal
+                        // Otherwise, will cancel the removal
                     } else JOptionPane.showMessageDialog(null, "Removal Canceled");
                 }
             }
