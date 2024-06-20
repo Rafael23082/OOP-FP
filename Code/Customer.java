@@ -390,15 +390,15 @@ final public class Customer extends User{
 
                     int days = 0;
                     Date dateObtained = null;
-                    boolean invalidDays = false;
+                    boolean validDays = false;
 
                     // Get a valid number of rental days
-                    while (!invalidDays) {
+                    while (!validDays) {
 
                         // Checks whether the data entered is an integer data type and greater than 0
                         try {
                             days = Integer.parseInt(JOptionPane.showInputDialog("Enter the amount of days the rental will be (Max 30 Days):"));
-                            if (days > 0 && days <= 30) invalidDays = true;
+                            if (days > 0 && days <= 30) validDays = true;
                         } catch (NumberFormatException a) {
                             JOptionPane.showMessageDialog(null, "Please Enter a valid Days Value");
                         }
