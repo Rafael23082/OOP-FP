@@ -18,7 +18,7 @@ final public class Customer extends User{
         this.customerID = "CUS" + Main.customerList.size();
     }
 
-     // Method that displays the car information of the cars present in the array
+    // Method that displays the car information of the cars present in the array
     public static void displayCarInformation(Car[] cars){
 
         UIManager.put("OptionPane.messageFont", new Font("Monospaced", Font.BOLD, 15)); // Make all letters occupy equal space
@@ -71,24 +71,29 @@ final public class Customer extends User{
         // Will display cars containing the brand the user enters
         brandButton.addActionListener( e -> {
 
+            boolean proceedExecution = true; // To provide appropriate action if user clicks ths cancel button
             boolean present = false;
             String carBrand = JOptionPane.showInputDialog("Enter a Car Brand:"); // Takes in brand input
+            if (carBrand == null) {
+                proceedExecution = false;
+            } // Redirects user if user clicks the cancel button
             ArrayList<Car> targetCars = new ArrayList<>();
 
-            // Compares the brand of cars with the input, if it's the same, add car to the targetCars list and set present to true.
-            for (Car C : Main.carList) {
-                if (C.getBrand().equalsIgnoreCase(carBrand)) {
-                    targetCars.add(C);
-                    present = true;
+            if (proceedExecution){
+                // Compares the brand of cars with the input, if it's the same, add car to the targetCars list and set present to true.
+                for (Car C : Main.carList) {
+                    if (C.getBrand().equalsIgnoreCase(carBrand)) {
+                        targetCars.add(C);
+                        present = true;
+                    }
                 }
+
+                // Display carInformation of the target cars
+                if (present) displayCarInformation(targetCars.toArray(new Car[0]));
+
+                    // If none is found, display error message
+                else JOptionPane.showMessageDialog(null, "There are no Cars with the brand " + carBrand);
             }
-
-            // Display carInformation of the target cars
-            if (present) displayCarInformation(targetCars.toArray(new Car[0]));
-
-            // If none is found, display error message
-            else JOptionPane.showMessageDialog(null, "There are no Cars with the brand " + carBrand);
-
         });
 
         // Year Button
@@ -99,22 +104,39 @@ final public class Customer extends User{
         yearButton.addActionListener( e -> {
 
             boolean present = false;
-            String carYear = JOptionPane.showInputDialog("Enter a Year:"); // Year input
-            ArrayList<Car> targetCars = new ArrayList<>();
+            String carYear = null;
+            boolean validYear = false;
+            boolean proceedAction = true; // To provide appropriate action if user clicks the cancel button
 
-            for (Car C : Main.carList) {
-                if (String.valueOf(C.getYear()).equalsIgnoreCase(carYear)) { // Checks if the input is the same as the feature
-                    targetCars.add(C); // If yes, add to the target cars list
-                    present = true;
+            while (!validYear) {
+                try {
+                    carYear = JOptionPane.showInputDialog("Enter a Year:"); // Year input
+                    if (carYear == null){
+                        proceedAction = false;
+                    } else {int carYearInteger = Integer.parseInt(carYear);}
+                    validYear = true;
+
+                } catch (NumberFormatException a){
+                    JOptionPane.showMessageDialog(null, "Please enter a number");
                 }
             }
+            ArrayList<Car> targetCars = new ArrayList<>();
 
-            // Displays car Information if present
-            if (present) displayCarInformation(targetCars.toArray(new Car[0]));
+            if (proceedAction) {
 
-            // Provides error message if not
-            else JOptionPane.showMessageDialog(null, "There are no Cars manufactured in the year " + carYear);
+                for (Car C : Main.carList) {
+                    if (String.valueOf(C.getYear()).equalsIgnoreCase(carYear)) { // Checks if the input is the same as the feature
+                        targetCars.add(C); // If yes, add to the target cars list
+                        present = true;
+                    }
+                }
 
+                // Displays car Information if present
+                if (present) displayCarInformation(targetCars.toArray(new Car[0]));
+
+                    // Provides error message if not
+                else JOptionPane.showMessageDialog(null, "There are no Cars manufactured in the year " + carYear);
+            }
         });
 
         // Price button
@@ -125,25 +147,46 @@ final public class Customer extends User{
         priceButton.addActionListener( e-> {
 
             boolean present = false;
-
+            String price = null;
             // Price input
-            double price = Double.parseDouble(JOptionPane.showInputDialog("Enter a price ($) to show cars with a price less than or equal to the number"));
-            ArrayList<Car> targetCars = new ArrayList<>();
+            double priceDouble = 0;
 
-            // Goes through each car and compare the price
-            for (Car C : Main.carList){
-                if (Double.parseDouble(C.getPricePerDay().substring(1)) <= price) { // Substring to remove the $ sign
-                    targetCars.add(C);
-                    present = true;
+            boolean validPrice = false;
+            boolean proceedProgram = true;
+
+            // Provides appropriate action if user cancels, or enter invalid data type
+            while (!validPrice) {
+                try {
+                    price = JOptionPane.showInputDialog("Enter a price ($) to show cars with a price less than or equal to the number");
+                    if (price == null){
+                        validPrice = true;
+                        proceedProgram = false;
+                    } else {
+                        priceDouble = Double.parseDouble(price);
+                        validPrice = true;
+                    }
+                } catch (NumberFormatException a) {
+                    JOptionPane.showMessageDialog(null, "Please enter a number");
                 }
             }
 
-            // Displays information if present
-            if (present) displayCarInformation(targetCars.toArray(new Car[0]));
+            ArrayList<Car> targetCars = new ArrayList<>();
 
-            // Displays error message if not
-            else JOptionPane.showMessageDialog(null, "There are no Cars within the price range of: $" + price);
+            if (proceedProgram) {
+                // Goes through each car and compare the price
+                for (Car C : Main.carList) {
+                    if (Double.parseDouble(C.getPricePerDay().substring(1)) <= priceDouble) { // Substring to remove the $ sign
+                        targetCars.add(C);
+                        present = true;
+                    }
+                }
 
+                // Displays information if present
+                if (present) displayCarInformation(targetCars.toArray(new Car[0]));
+
+                    // Displays error message if not
+                else JOptionPane.showMessageDialog(null, "There are no Cars within the price range of: $" + price);
+            }
         });
 
         // Mileage button
@@ -153,15 +196,31 @@ final public class Customer extends User{
         // Displays cars with less mileage than the number the user entered
         mileageButton.addActionListener( e-> {
 
-            boolean present = false;
+            boolean present = false, validInput = false;
+            boolean proceedTheProgram = true;
+            String mileage = null;
+            Double mileageDouble = 0.0;
 
-            // Mileage input
-            double mileage = Double.parseDouble(JOptionPane.showInputDialog("Enter a distance (KM) to show cars with mileage less than or equal to the number"));
+            while (!validInput) {
+                // Mileage input
+                try {
+                    mileage = JOptionPane.showInputDialog("Enter a distance (KM) to show cars with mileage less than or equal to the number");
+                    if (mileage == null) {
+                        proceedTheProgram = false;
+                    }
+                    else mileageDouble = Double.parseDouble(mileage);
+                    validInput = true;
+                } catch (NumberFormatException a) {
+                    JOptionPane.showMessageDialog(null, "Please enter a number");
+                }
+            }
+
             ArrayList<Car> targetCars = new ArrayList<>();
 
+            if (proceedTheProgram){
             // Goes through each car in the list
             for (Car C : Main.carList){
-                if (Double.parseDouble(C.getMileage().substring(0, C.getMileage().length() - 3)) <= mileage) { // Substring to remove the KM unit, and see if the value is less than the input
+                if (Double.parseDouble(C.getMileage().substring(0, C.getMileage().length() - 3)) <= mileageDouble) { // Substring to remove the KM unit, and see if the value is less than the input
                     targetCars.add(C); // Add to target cars
                     present = true;
                 }
@@ -169,9 +228,9 @@ final public class Customer extends User{
 
             if (present) displayCarInformation(targetCars.toArray(new Car[0])); // Displays car information if present
 
-            // Displays error message if no car follows the criteria
+                // Displays error message if no car follows the criteria
             else JOptionPane.showMessageDialog(null, "There are no Cars within a mileage less than " + mileage);
-
+}
         });
 
         // Add all the buttons into the panel, and the panel to the frame
@@ -223,26 +282,26 @@ final public class Customer extends User{
         // e is a lambda expression that represents an Action Listener
         compareButton.addActionListener(e -> {
 
-                Car carNo1 = null;
-                Car carNo2 = null;
+            Car carNo1 = null;
+            Car carNo2 = null;
 
-                // Get selected cars
-                String carName1 = String.valueOf(carChoice1.getSelectedItem());
-                String carName2 = String.valueOf(carChoice2.getSelectedItem());
+            // Get selected cars
+            String carName1 = String.valueOf(carChoice1.getSelectedItem());
+            String carName2 = String.valueOf(carChoice2.getSelectedItem());
 
-                // Displays an error message if cars are equivalent
-                if (carName1.equalsIgnoreCase(carName2)) JOptionPane.showMessageDialog(null, "Please Choose Different Cars");
-                else {
-                    // Get the cars
-                    for (Car C : Main.carList){
-                        if ((C.getID() + "/" + C.getBrand() + " " + C.getModel()).equalsIgnoreCase(carName1)) carNo1 = C;
-                        if ((C.getID() + "/" + C.getBrand() + " " + C.getModel()).equalsIgnoreCase(carName2)) carNo2 = C;
-                    }
-
-                    // Show the comparison
-                    showComparison(carNo1, carNo2, customer);
-                    frame.dispose();
+            // Displays an error message if cars are equivalent
+            if (carName1.equalsIgnoreCase(carName2)) JOptionPane.showMessageDialog(null, "Please Choose Different Cars");
+            else {
+                // Get the cars
+                for (Car C : Main.carList){
+                    if ((C.getID() + "/" + C.getBrand() + " " + C.getModel()).equalsIgnoreCase(carName1)) carNo1 = C;
+                    if ((C.getID() + "/" + C.getBrand() + " " + C.getModel()).equalsIgnoreCase(carName2)) carNo2 = C;
                 }
+
+                // Show the comparison
+                showComparison(carNo1, carNo2, customer);
+                frame.dispose();
+            }
         });
 
         // Add all elements to the panel, and the panel to the frame
