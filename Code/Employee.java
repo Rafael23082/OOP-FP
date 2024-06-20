@@ -407,7 +407,7 @@ final public class Employee extends User{
                 }
             } else if (change == null) { // Makes sure to cancel properly
                 validInput = true;
-                proceedTheProgram = false;
+                proceedTheProgram = false; // Make it not execute the rest of the method
             } else validInput = true; // Will not loop if it is not regarding the status
         }
 
