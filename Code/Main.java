@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 
-final public class Main{
+final public class Main implements InterfaceClass{
 
     // Stores all Customers
     static ArrayList<Customer> customerList = new ArrayList<>();
@@ -33,7 +33,14 @@ final public class Main{
         // Add Cars
         carList.addAll(Arrays.asList(car1, car2, car3, car4, car5, car6, car7, car8, car9, car10));
 
+        // New instance
+        Main main = new Main();
+
         // Run homepage
+        main.run();
+    }
+
+    public void run(){
         User.runHomePage();
-    } 
+    }
 }
