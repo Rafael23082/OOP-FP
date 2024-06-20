@@ -447,7 +447,7 @@ public class User{
         Label welcomingMessage = new Label("Welcome " + employee.getFirstName() + " " + employee.getLastName() + "!", 20, 0, 1280, 100, 25, false);
         Label employeeID = new Label("Employee ID: " + employee.employeeID, 20, 35, 1280, 100, 15, false);
 
-        Panel addCar = new Panel(150, 230, 300, 200); // Panel for the add car function
+        Panel addCar = new Panel(150, 180, 300, 200); // Panel for the add car function
 
         Label addCarHeader = new Label("Add Car", 0, 0, 300, 100, 15, true); // Header
         addCar.add(addCarHeader);
@@ -463,7 +463,7 @@ public class User{
             frame.dispose();
         });
 
-        Panel deleteCar = new Panel(500, 230, 300, 200); // Panel for the delete car action
+        Panel deleteCar = new Panel(500, 180, 300, 200); // Panel for the delete car action
 
         Label searchCarsHeader = new Label("Delete Car", 0, 0, 300, 100, 15, true); // Header
         deleteCar.add(searchCarsHeader);
@@ -479,7 +479,7 @@ public class User{
             frame.dispose();
         });
 
-        Panel editCars = new Panel(850, 230, 300, 200); // Panel for the edit car action
+        Panel editCars = new Panel(850, 180, 300, 200); // Panel for the edit car action
 
         Label editCarsHeader = new Label("Edit Car", 0, 0, 300, 100, 15, true); // Header
         editCars.add(editCarsHeader);
@@ -495,8 +495,24 @@ public class User{
             frame.dispose();
         });
 
+        Panel showCars = new Panel(500, 430, 300, 200); // Panel for the rent car action
+
+        Label showCarsHeader = new Label("Show Cars", 0, 0, 300, 100, 15, true); // Header
+        showCars.add(showCarsHeader);
+
+        // Show Button
+        JButton showCarButton = new JButton("Show");
+        showCarButton.setBounds(110, 100, 90, 50);
+        showCars.add(showCarButton);
+
+        // Will display all cars information
+        showCarButton.addActionListener( e-> {
+            Customer.displayCarInformation(Main.carList.toArray(new Car[0]));
+        });
+
+
         // Add all panels to the frame
-        frame.add(welcomingMessage); frame.add(employeeID); frame.add(addCar); frame.add(deleteCar); frame.add(editCars);
+        frame.add(welcomingMessage); frame.add(employeeID); frame.add(addCar); frame.add(deleteCar); frame.add(editCars); frame.add(showCars);
     }
 
     public String getFirstName() {
