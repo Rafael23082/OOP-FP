@@ -379,6 +379,7 @@ final public class Employee extends User{
 
         boolean validInput = false;
         String change = null;
+        boolean proceedTheProgram = true;
 
         while (!validInput) {
             // Get the new string
@@ -404,18 +405,22 @@ final public class Employee extends User{
                 } catch (NumberFormatException e){
                     JOptionPane.showMessageDialog(null, "Please enter an integer");
                 }
-            } else if (change == null) { // Makes sure input is not null
-                JOptionPane.showMessageDialog(null, "Please enter a valid input");
+            } else if (change == null) { // Makes sure to cancel properly
+                validInput = true;
+                proceedTheProgram = false;
             } else validInput = true; // Will not loop if it is not regarding the status
         }
-        // Ask for confirmation
-        int confirmation = JOptionPane.showConfirmDialog(null, "Confirm change of " + feature + " from " + carFeature + " to " + change + "?");
 
-        // If yes, it will return the string changed and display a success message
-        if (confirmation == 0) {
-            JOptionPane.showMessageDialog(null, "Car " + feature + " is successfully changed from " + carFeature + " to " + change + "!");
-            return change;
+        if (proceedTheProgram) {
+            // Ask for confirmation
+            int confirmation = JOptionPane.showConfirmDialog(null, "Confirm change of " + feature + " from " + carFeature + " to " + change + "?");
+
+            // If yes, it will return the string changed and display a success message
+            if (confirmation == 0) {
+                JOptionPane.showMessageDialog(null, "Car " + feature + " is successfully changed from " + carFeature + " to " + change + "!");
+            } else change = null; // If not, it will return null leading to no changes made
         }
-        else return null; // If not, it will return null leading to no changes made
+
+        return change; // Returns change
     }
 }
