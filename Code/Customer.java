@@ -1,6 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 // Class that processes the actions of a customer
 final public class Customer extends User{
@@ -324,7 +331,7 @@ final public class Customer extends User{
                 else {
 
                     int days = 0;
-                    String date = null;
+                    Date dateObtained = null;
                     boolean invalidDays = false;
 
                     // Get a valid number of rental days
@@ -339,27 +346,30 @@ final public class Customer extends User{
                         }
                     }
 
-                    // Get valid date format
+                    // Get Valid Date
                     boolean validDate = false;
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Create Date format
+                    formatter.setLenient(false); // Ensure values in the date entered are valid
+                    Date now = Date.from(Instant.now()); // Get current time
 
+                    // Loops until date entered is valid
                     while (!validDate) {
-                        date = JOptionPane.showInputDialog("Enter the date of rent (dd/mm/yyyy)");
+                        try {
+                            // Get date fro, user
+                            String dates = JOptionPane.showInputDialog("Enter a date for the rental in the form of (dd/MM/yyyy)");
+                            dateObtained = formatter.parse(dates); // Parse date
 
-                        String[] dates = date.split("/");
-
-                        if (dates.length == 3) { // Ensure that the format is correct
-
-                            // Ensure dates are valid
-                            if (Integer.parseInt(dates[2]) != 2024 || Integer.parseInt(dates[1]) > 12 || Integer.parseInt(dates[0]) > 32) {
+                            // Ensures that the date is after today
+                            if (now.after(dateObtained)) {
                                 JOptionPane.showMessageDialog(null, "Please enter a valid date");
-                            } else {
-                                validDate = true;
-                            }
+                            } else validDate = true;
 
-                            // Error message
-                        } else JOptionPane.showMessageDialog(null, "Please enter a valid date");
+                        } catch (ParseException a) { // If there is a parse error, will display an error message and continue loop
+                            JOptionPane.showMessageDialog(null, "Please enter a valid date");
+                        }
                     }
-                    rentCar(C, customer, days, date); // If there are no more errors, car will be rented
+
+                    rentCar(C, customer, days, dateObtained); // If there are no more errors, car will be rented
                     frame.dispose();
                 }
             });
@@ -375,7 +385,7 @@ final public class Customer extends User{
     }
 
     // Method that confirms the rental information
-    public static void rentCar(Car car, Customer customer, int days, String date){
+    public static void rentCar(Car car, Customer customer, int days, Date date){
 
         Frame frame = new Frame();
 
